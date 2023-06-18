@@ -1,72 +1,72 @@
-#!/bin/bash
-###########################################################################################
-#    One-click Desktop & Browser Access Setup Script v0.2.0                               #
-#    Written by shc (https://qing.su)                                                     #
-#    Github link: https://github.com/Har-Kuun/OneClickDesktop                             #
-#    Contact me: https://t.me/hsun94   E-mail: hi@qing.su                                 #
-#                                                                                         #
-#    This script is distributed in the hope that it will be                               #
-#    useful, but ABSOLUTELY WITHOUT ANY WARRANTY.                                         #
-#                                                                                         #
-#    The author thanks LinuxBabe for providing detailed                                   #
-#    instructions on Guacamole setup.                                                     #
-#    https://www.linuxbabe.com/debian/apache-guacamole-remote-desktop-debian-10-buster    #
-#                                                                                         #
-#    Thank you for using this script.                                                     #
-###########################################################################################
+#!/bin/庆典
+################################################## #########################################
+# 一键式桌面和浏览器访问设置脚本 v0.2.0 #
+# 作者：shc (https://qing.su) #
+# Github 链接：https://github.com/Har-Kuun/OneClickDesktop #
+# 联系我：https://t.me/hsun94 邮箱：hi@qing.su #
+##
+# 这个脚本是分发的希望它会是 #
+# 有用，但绝对没有任何保证。#
+##
+#作者感谢LinuxBabe提供详细#
+# 鳄梨酱设置说明。#
+# https://www.linuxbabe.com/debian/apache-guacamole-remote-desktop-debian-10-buster #
+##
+# 感谢您使用这个脚本。#
+################################################## #########################################
 
 
-#You can change the Guacamole source file download link here.
-#Check https://guacamole.apache.org/releases/ for the latest stable version.
+#您可以在此处更改鳄梨酱源文件下载链接。
+#Check https://guacamole.apache.org/releases/ 获取最新的稳定版本。
 
-GUACAMOLE_DOWNLOAD_LINK="https://mirrors.ocf.berkeley.edu/apache/guacamole/1.2.0/source/guacamole-server-1.2.0.tar.gz"
-GUACAMOLE_VERSION="1.2.0"
+GUACAMOLE_DOWNLOAD_LINK = "https://mirrors.ocf.berkeley.edu/apache/guacamole/1.5.2/source/guacamole-server-1.5.2.tar.gz"
+GUACAMOLE_VERSION = "1.5.2"
 
-#By default, this script only works on Ubuntu 18/20, Debian 10, and CentOS 7/8.
-#You can disable the OS check switch below and tweak the code yourself to try to install it in other OS versions.
-#Please do note that if you choose to use this script on OS other than Ubuntu 18/20, Debian 10, or CentOS 7/8, you might mess up your OS.  Please keep a backup of your server before installation.
+#默认情况下，此脚本仅适用于 Ubuntu 18/20、Debian 10 和 CentOS 7/8。
+#You can disable the OS check switch below and tweak the code to try to install it in other OS versions.
+#请注意，如果您选择在 Ubuntu 18/20、Debian 10 或 CentOS 7/8 以外的操作系统上使用此脚本，您可能会弄乱您的操作系统。安装前请备份您的服务器。
 
-OS_CHECK_ENABLED=ON
-
-
+OS_CHECK_ENABLED =ON
 
 
-#########################################################################
-#    Functions start here.                                              #
-#    Do not change anything below unless you know what you are doing.   #
-#########################################################################
 
-exec > >(tee -i OneClickDesktop.log)
-exec 2>&1
 
-function check_OS
+################################################## #######################
+# 函数从这里开始。#
+# 除非你知道你在做什么，否则不要改变下面的任何东西。#
+################################################## #######################
+
+执行 > >(tee -i OneClickDesktop.log)
+执行2 >&1
+
+功能检查_OS
 {
-	if [ -f /etc/lsb-release ] ; then
-		cat /etc/lsb-release | grep "DISTRIB_RELEASE=18." >/dev/null
-		if [ $? = 0 ] ; then
-			OS=UBUNTU18
-		else
-			cat /etc/lsb-release | grep "DISTRIB_RELEASE=20." >/dev/null
-			if [ $? = 0 ] ; then
-				OS=UBUNTU20
-			else
-				say "Sorry, this script only supports Ubuntu 20, Debian 10, and CentOS 7/8." red
-				echo 
-				exit 1
-			fi
-		fi
-	elif [ -f /etc/debian_version ] ; then
-		cat /etc/debian_version | grep "^10." >/dev/null
-		if [ $? = 0 ] ; then
-			OS=DEBIAN10
-		else
-			say "Sorry, this script only supports Ubuntu 20, Debian 10, and CentOS 7/8." red
-			echo 
-			exit 1
-		fi
-	elif [ -f /etc/redhat-release ] ; then
-		cat /etc/redhat-release | grep " 8." >/dev/null
-		if [ $? = 0 ] ; then
+	如果[ -f /etc/lsb-release ] ; 然后
+		猫 /etc/lsb-release | grep “DISTRIB_RELEASE=18”。>/开发/空
+		如果[ $? = 0 ] ; 然后
+			操作系统=UBUNTU18
+		别的
+			猫 /etc/lsb-release | grep “DISTRIB_RELEASE=20”。>/开发/空
+			如果[ $? = 0 ] ; 然后
+				操作系统=UBUNTU20
+			别的
+				说“抱歉，此脚本仅支持 Ubuntu 20、Debian 10 和 CentOS 7/8。” 红色的
+				回声
+				出口 1
+			菲
+		菲
+	elif [ -f /etc/debian_version ] ; 然后
+		猫 /etc/debian_version | grep “^10”。>/开发/空
+		如果[ $? = 0 ] ; 然后
+			操作系统=DEBIAN10
+		别的
+			说“抱歉，此脚本仅支持 Ubuntu 20、Debian 10 和 CentOS 7/8。” 红色的
+			回声
+			出口 1
+		菲
+	elif [ -f /etc/redhat-release ] ; 然后
+		猫 /etc/redhat-release | 搜索“8” 。>/开发/空
+		如果[ $? = 0 ] ; 然后
 			OS=CENTOS8
 			say @B"Support of CentOS 8 is experimental.  Please report bugs." yellow
 			say @B"Please try disabling selinux or firewalld if you cannot visit your desktop." yellow
